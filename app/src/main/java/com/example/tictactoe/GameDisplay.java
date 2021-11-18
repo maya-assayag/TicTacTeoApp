@@ -8,14 +8,18 @@ import android.view.View;
 
 public class GameDisplay extends AppCompatActivity {
 
+    private TicTacToaBoard ticTacToaBoard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_display);
+
+        ticTacToaBoard = findViewById(R.id.ticTacToaBoard);
     }
 
     public void playAgainButtonClick(View view){
-
+        ticTacToaBoard.resetGame();
+        ticTacToaBoard.invalidate();
     }
 
     public void homeButtonClick(View view)
