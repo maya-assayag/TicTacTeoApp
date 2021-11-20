@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -18,6 +20,8 @@ public class TicTacToaBoard extends View {
     private final int XColor;
     private final int OColor;
     private final int winningLineColor;
+
+    private boolean winningLine = false;
 
     private final Paint paint = new Paint();
 
@@ -75,14 +79,21 @@ public class TicTacToaBoard extends View {
             int row = (int) Math.ceil(y/cellSize);
             int col = (int) Math.ceil(x/cellSize);
 
-            if (game.updateGameBoard(row, col)){
-                invalidate();
+            if(!winningLine){
+                if (game.updateGameBoard(row, col)){
+                    invalidate();
 
-                if (game.getPlayer() % 2 == 0){
-                    game.setPlayer(game.getPlayer()-1);
-                }
-                else{
-                    game.setPlayer(game.getPlayer()+1);
+                    if(game.winnerCheck()){
+                        winningLine = true;
+                        invalidate();
+                    }
+
+                    if (game.getPlayer() % 2 == 0){
+                        game.setPlayer(game.getPlayer()-1);
+                    }
+                    else{
+                        game.setPlayer(game.getPlayer()+1);
+                    }
                 }
             }
 
@@ -149,8 +160,16 @@ public class TicTacToaBoard extends View {
                 paint);
     }
 
+    public void setUpGame(Button playAgain, Button home, TextView playerDisplay, String[] names){
+        game.setPlayAgainBTN(playAgain);
+        game.setHomeBTN(home);
+        game.setPlayerTurn(playerDisplay);
+        game.setPlayersNames(names);
+    }
+
     public void resetGame(){
         game.resetGame();
+        winningLine = false;
     }
 
 }
